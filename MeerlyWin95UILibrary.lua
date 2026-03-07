@@ -939,7 +939,7 @@ function MeerlyWin95:_buildThemePage()
         Text = "Theme Manager",
         Font = Enum.Font.Code,
         TextSize = 18,
-        Size = UDim2.new(1, -16, 0, 26),
+        Size = UDim2.new(1, -24, 0, 26),
         Position = UDim2.fromOffset(8, 8),
         BackgroundTransparency = 1,
         TextXAlignment = Enum.TextXAlignment.Left,
@@ -949,7 +949,7 @@ function MeerlyWin95:_buildThemePage()
     local function addThemeRow(themeDef, index)
         local row = make("Frame", {
             Parent = page,
-            Size = UDim2.new(1, -16, 0, 30),
+            Size = UDim2.new(1, -24, 0, 30),
             Position = UDim2.fromOffset(8, y),
             BorderSizePixel = 0,
         })
@@ -1023,7 +1023,7 @@ function MeerlyWin95:_buildThemePage()
 
     local transTrack = make("Frame", {
         Parent = page,
-        Size = UDim2.new(1, -16, 0, 18),
+        Size = UDim2.new(1, -24, 0, 18),
         Position = UDim2.fromOffset(8, y + 30),
         BorderSizePixel = 0,
     })
@@ -1066,7 +1066,7 @@ function MeerlyWin95:_buildThemePage()
 
     local blurTrack = make("Frame", {
         Parent = page,
-        Size = UDim2.new(1, -16, 0, 18),
+        Size = UDim2.new(1, -24, 0, 18),
         Position = UDim2.fromOffset(8, y + 78),
         BorderSizePixel = 0,
     })
@@ -1220,7 +1220,7 @@ function MeerlyWin95:_buildConfigPage()
         Text = "Unified Configuration Slots",
         Font = Enum.Font.Code,
         TextSize = 18,
-        Size = UDim2.new(1, -16, 0, 24),
+        Size = UDim2.new(1, -24, 0, 24),
         Position = UDim2.fromOffset(8, 8),
         BackgroundTransparency = 1,
         TextXAlignment = Enum.TextXAlignment.Left,
@@ -1230,7 +1230,7 @@ function MeerlyWin95:_buildConfigPage()
     for slot = 1, 5 do
         local row = make("Frame", {
             Parent = page,
-            Size = UDim2.new(1, -16, 0, 34),
+            Size = UDim2.new(1, -24, 0, 34),
             Position = UDim2.fromOffset(8, y),
             BorderSizePixel = 0,
         })
@@ -1362,7 +1362,7 @@ function MeerlyWin95:_buildConsolePage()
         Text = "Console",
         Font = Enum.Font.Code,
         TextSize = 18,
-        Size = UDim2.new(1, -16, 0, 24),
+        Size = UDim2.new(1, -24, 0, 24),
         Position = UDim2.fromOffset(8, 8),
         BackgroundTransparency = 1,
         TextXAlignment = Enum.TextXAlignment.Left,
@@ -1408,7 +1408,7 @@ function MeerlyWin95:_buildConsolePage()
 
     self.consoleList = make("ScrollingFrame", {
         Parent = page,
-        Size = UDim2.new(1, -16, 1, -110),
+        Size = UDim2.new(1, -24, 1, -110),
         Position = UDim2.fromOffset(8, 100),
         BorderSizePixel = 0,
         BackgroundTransparency = 1,
@@ -1464,7 +1464,7 @@ function MeerlyWin95:_buildPerformancePage()
         Text = "Performance Quick Panel",
         Font = Enum.Font.Code,
         TextSize = 18,
-        Size = UDim2.new(1, -16, 0, 24),
+        Size = UDim2.new(1, -24, 0, 24),
         Position = UDim2.fromOffset(8, 8),
         BackgroundTransparency = 1,
         TextXAlignment = Enum.TextXAlignment.Left,
