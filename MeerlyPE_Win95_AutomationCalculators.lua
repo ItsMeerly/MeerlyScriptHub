@@ -609,17 +609,17 @@ function MeerlyWin95:_buildPEAutomationPage()
     self:registerStatisticProvider("Skill Activations", function()
         local total = math.max(0, math.floor(tonumber(self.state.statisticsData.totalSkillActivations) or 0))
         local tier = "None"
-        if total >= 50000 then tier = "Master"
-        elseif total >= 20000 then tier = "Platinum"
-        elseif total >= 10000 then tier = "Diamond"
-        elseif total >= 5000 then tier = "Gold"
-        elseif total >= 1000 then tier = "Silver"
-        elseif total >= 200 then tier = "Bronze"
+        if total >= 100000 then tier = "Master"
+        elseif total >= 80000 then tier = "Platinum"
+        elseif total >= 50000 then tier = "Diamond"
+        elseif total >= 30000 then tier = "Gold"
+        elseif total >= 10000 then tier = "Silver"
+        elseif total >= 1000 then tier = "Bronze"
         end
 
         return {
             primary = tostring(total),
-            detail = "Bronze 200 | Silver 1k | Gold 5k | Diamond 10k | Platinum 20k | Master 50k",
+            detail = "Bronze 1,000 | Silver 10,000 | Gold 30,000 | Diamond 50,000 | Platinum 80,000 | Master 100,000",
             order = 19,
             tier = tier,
         }
