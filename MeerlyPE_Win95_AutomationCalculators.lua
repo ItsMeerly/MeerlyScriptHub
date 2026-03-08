@@ -18,8 +18,8 @@ local player = Players.LocalPlayer
 local CONFIG = {
     LibraryPath = "MeerlyWin95UILibrary.lua",
     -- Optional remote fallback. Example:
-    -- LibraryRawUrl = "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/MeerlyWin95UILibrary.lua",
-    LibraryRawUrl = nil,
+    LibraryRawUrl = "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/MeerlyWin95UILibrary.lua",
+    -- LibraryRawUrl = nil,
     AccessKey = "1234",
     AccessLink = "https://work.ink/2kaV/meerlype-key123",
     Title = "Meerly Win95 + PE Automation/Calculators",
