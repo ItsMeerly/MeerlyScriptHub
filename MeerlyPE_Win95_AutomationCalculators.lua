@@ -18,11 +18,11 @@ local player = Players.LocalPlayer
 local CONFIG = {
     LibraryPath = "MeerlyWin95UILibrary.lua",
     -- Optional remote fallback. Example:
-    LibraryRawUrl = "https://raw.githubusercontent.com/ItsMeerly/MeerlyScriptHub/refs/heads/main/MeerlyWin95UILibrary.lua",
-    -- LibraryRawUrl = nil,
+    -- LibraryRawUrl = "https://raw.githubusercontent.com/<owner>/<repo>/<branch>/MeerlyWin95UILibrary.lua",
+    LibraryRawUrl = nil,
     AccessKey = "1234",
     AccessLink = "https://work.ink/2kaV/meerlype-key123",
-    Title = "MeerlyPE Win95",
+    Title = "Meerly Win95 + PE Automation/Calculators",
     ToggleKey = Enum.KeyCode.Semicolon,
 }
 
@@ -109,6 +109,10 @@ local function loadWin95Library()
         'local KEY_LINK = "' .. escapeLuaString(CONFIG.AccessLink) .. '"'
     )
 
+    -- Some client builds reject ScrollingFrame.ScrollBarInset; strip this property
+    -- from the loaded source to avoid noisy runtime warnings.
+    source = source:gsub("ScrollBarInset%s*=%s*Enum%.ScrollBarInset%.%w+,%s*", "")
+
     local chunk = assert(loadstring(source), "Failed to compile Win95 library")
     return chunk()
 end
@@ -159,13 +163,39 @@ end
 -- ============================================================
 -- Win95 page helpers
 -- ============================================================
-local function nextStackY(holder)
-    holder._y = holder._y or 8
-    return holder._y
+local PageStackState = setmetatable({}, { __mode = "k" })
+
+local function getPageState(page)
+    local state = PageStackState[page]
+    if not state then
+        state = {
+            baseY = 8,
+            blocks = {},
+        }
+        PageStackState[page] = state
+    end
+    return state
 end
 
-local function advanceStackY(holder, amount)
-    holder._y = (holder._y or 8) + amount
+local function nextStackY(page)
+    return getPageState(page).baseY
+end
+
+local function advanceStackY(page, amount)
+    local state = getPageState(page)
+    state.baseY = state.baseY + amount
+end
+
+local function registerStackBlock(page, block)
+    table.insert(getPageState(page).blocks, block)
+end
+
+local function reflowStackPage(page)
+    local state = getPageState(page)
+    local y = state.baseY
+    for _, block in ipairs(state.blocks) do
+        y += block(y)
+    end
 end
 
 local function addHeader(page, text)
@@ -225,15 +255,15 @@ local function addAccordion(page, title, defaultOpen)
     header.MouseButton1Click:Connect(function()
         open = not open
         refresh()
-        page._reflow()
+        reflowStackPage(page)
     end)
 
     layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         refresh()
-        page._reflow()
+        reflowStackPage(page)
     end)
 
-    page._registerBlock(function(y)
+    registerStackBlock(page, function(y)
         header.Position = UDim2.fromOffset(8, y)
         body.Position = UDim2.fromOffset(8, y + 26)
         return 26 + body.Size.Y.Offset + 8
@@ -358,18 +388,11 @@ local function addResultLabel(parent, text)
 end
 
 local function wireStackPage(page)
-    page._blocks = {}
-    page._registerBlock = function(block)
-        table.insert(page._blocks, block)
-    end
-
-    page._reflow = function()
-        local y = nextStackY(page)
-        for _, block in ipairs(page._blocks) do
-            y += block(y)
-        end
-    end
+    local state = getPageState(page)
+    state.baseY = 8
+    state.blocks = {}
 end
+
 
 -- ============================================================
 -- Injected PE Automation page
@@ -501,7 +524,7 @@ function MeerlyWin95:_buildPEAutomationPage()
         varBox.Text = tostring(st.cooldownVariance)
     end)
 
-    page:_reflow()
+    reflowStackPage(page)
 
     task.spawn(function()
         local staggerIndex = 1
@@ -855,7 +878,7 @@ function MeerlyWin95:_buildPECalculatorsPage()
     addButton(bossBody, "Recalculate", recalcBoss)
     task.defer(recalcBoss)
 
-    page:_reflow()
+    reflowStackPage(page)
 end
 
 -- Build order injection: new pages BEFORE Settings
